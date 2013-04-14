@@ -7,35 +7,31 @@ import urllib.request
 import re
 
 try:
-    f = open('T:\Dropbox\Classes\GeoHealth\zip codes.txt','r')  # *** change filepath when you move this program to server
+
+    zipcode=92064
 
 
-    for i in range(0,200):
     #out = "<html>%s%s%s%s</html>" % (head, prologue, query, tail)
-        head='http://www.wunderground.com/DisplayPollen.asp?Zipcode='
-        tail=f.readline()
+    head='http://www.wunderground.com/DisplayPollen.asp?Zipcode='
+    tail=zipcode
 
-        page = urllib.request.urlopen('%s%s' % (head, tail))
-        soup = BeautifulSoup(page)
-        pollenForecast = soup.findAll("p", "big b") #find all p class named "big b".  this is the class wunderground places their pollen count forecast numbers in.
+    page = urllib.request.urlopen('%s%s' % (head, tail))
+    soup = BeautifulSoup(page)
+    pollenForecast = soup.findAll("p", "big b") #find all p class named "big b".  this is the class wunderground places their pollen count forecast numbers in.
             #ex of return at a given index of pollenForecastCounts: <p class="big b">8.40</p>
 
 
-        pollenCount=[] #just for scope and modularity.  perhaps unnecessary for our purposes.
+    pollenCount=[] #just for scope and modularity.  perhaps unnecessary for our purposes.
 
-        for x in range(0,len(pollenForecast)):
-            y=re.findall(r'\d+', str(pollenForecast[x])) #sample output: "10", "20"
-            if len(y)>1:
-                pollenCount.append(float('%s%s%s' % (y[0],'.',y[1])))
+    for x in range(0,len(pollenForecast)):
+        y=re.findall(r'\d+', str(pollenForecast[x])) #sample output: "10", "20"
+        if len(y)>1:
+            pollenCount.append(float('%s%s%s' % (y[0],'.',y[1])))
 
 
-    #    for j in range(0, len(pollenCount)):
-     #           print(pollenCount[j])
+    for j in range(0, len(pollenCount)):
+        print(pollenCount[j])
 
 
 except urllib.error.URLError as e:
         print(e.reason)
-
-
-
-f.close()

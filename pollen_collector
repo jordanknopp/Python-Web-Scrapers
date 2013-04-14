@@ -1,5 +1,6 @@
 #Author: JK
 #Python script to grab pollen index from wunderground.com (because no API support for this)
+#Requires beautiful soup
 from bs4 import BeautifulSoup
 
 import urllib.request

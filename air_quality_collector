@@ -1,0 +1,68 @@
+#Author: JK
+import datetime
+import urllib.request
+import re
+import urllib
+
+#expected differenceds: urllib, datetime
+#Particle types we are working with:
+#Carbon Monoxide (CO)
+#Nitrogen Dioxide (NO_2)
+#Ozone (O_3)
+#BAM PM2.5
+
+try:
+        yesterday=str(datetime.datetime.today() - datetime.timedelta(days=1))
+        yesterday=yesterday.split(' ', 1)[0]
+        print(yesterday)
+
+        str_list=[]
+        str_list.append('http://www.arb.ca.gov/aqmis2/display.php?download=y&param=')
+        str_list.append('PARAM')
+        str_list.append('&units=007&statistic=DAVG&year=')
+        str_list.append(str(datetime.datetime.today().year) + "&mon=")
+        str_list.append(str(datetime.datetime.today().month) + "&day=")
+        str_list.append(str(datetime.datetime.today().day))
+        str_list.append('&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd')
+        str_list[1]='OZONE'
+        ozoneurl=''.join(str_list)
+
+        str_list[1] = 'CO'
+        courl=''.join(str_list)
+
+        str_list[1]='NO2'
+        no2url=''.join(str_list)
+
+        str_list[1]='PM25'
+        pm25url=''.join(str_list)
+
+        print(ozoneurl)
+        print(courl)
+        print(no2url)
+        print(pm25url)
+
+
+
+        with open('T:\\Dropbox\\Classes\\GeoHealth\\datafile.txt', 'r') as inF:
+            for line in inF:
+                if yesterday in line:
+                    linedata=line.split(',')
+                    site=linedata[1]
+                    val=linedata[2]
+                    #print('Site:', site, " and val:", val)
+
+
+except urllib.error.URLError as e:
+        print(e.reason)
+#Ozone
+#http://www.arb.ca.gov/aqmis2/display.php?download=y&param=OZONE&units=007&statistic=DAVG&year=2013&mon=4&day=14&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd
+#Carbon Monoxide
+#http://www.arb.ca.gov/aqmis2/display.php?download=y&param=CO&units=007&statistic=DAVG&year=2013&mon=4&day=14&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd
+#Nitrogen Dioxide
+#http://www.arb.ca.gov/aqmis2/display.php?download=y&param=NO2&units=007&statistic=DAVG&year=2013&mon=4&day=14&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd
+#BAM PM2.5
+#http://www.arb.ca.gov/aqmis2/display.php?download=y&param=PM25&units=007&statistic=DAVG&year=2013&mon=4&day=14&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd
+
+
+
+inF.close()

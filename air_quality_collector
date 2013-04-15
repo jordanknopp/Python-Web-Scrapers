@@ -1,8 +1,9 @@
 #Author: JK
+#with Joe Robert's changes for Python 3.0 -> Python 2.0 compatibility
+
 import datetime
 import re
-import urllib
-import urllib.request, urllib.parse, urllib.error
+import urllib2
 
 #expected differences: urllib, datetime
 #Particle types we are working with:
@@ -24,6 +25,7 @@ try:
         str_list.append(str(datetime.datetime.today().month) + "&day=")
         str_list.append(str(datetime.datetime.today().day))
         str_list.append('&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd')
+       
         str_list[1]='OZONE'
         ozoneurl=''.join(str_list)
 
@@ -36,17 +38,8 @@ try:
         str_list[1]='PM25'
         pm25url=''.join(str_list)
 
-        print(ozoneurl)
-        print(courl)
-        print(no2url)
-        print(pm25url)
 
-        urllib.urlopen(ozoneurl)
-        file.close()
-
-
-
-        """for i in range(1,4):
+        for i in range(1,4):
             if (i==1):
                 url=ozoneurl
             if(i==2):
@@ -55,33 +48,15 @@ try:
                 url=no2url
             if(i==4):
                 url=pm25url
-            with open('T:\\Dropbox\\Classes\\GeoHealth\\datafile.txt', 'r') as inF:
-                for line in inF:
-                    if yesterday in line:
+            inF = urllib2.urlopen(url)
+            for line in inF:
+                if yesterday in line:                   #most recent daily average available is that of yesterday
                         linedata=line.split(',')
                         site=linedata[1]
                         val=linedata[2]
-                        #print('Site:', site, " and val:", val)
-                        inF.close() put at end...
-                        """
+                        print('Site:', site, " and val:", val)
+                        inF.close()
+                        
 
-
-
-
-
-
-
-
-except urllib.error.URLError as e:
-        print(e.reason)
-#Ozone
-#http://www.arb.ca.gov/aqmis2/display.php?download=y&param=OZONE&units=007&statistic=DAVG&year=2013&mon=4&day=14&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd
-#Carbon Monoxide
-#http://www.arb.ca.gov/aqmis2/display.php?download=y&param=CO&units=007&statistic=DAVG&year=2013&mon=4&day=14&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd
-#Nitrogen Dioxide
-#http://www.arb.ca.gov/aqmis2/display.php?download=y&param=NO2&units=007&statistic=DAVG&year=2013&mon=4&day=14&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd
-#BAM PM2.5
-#http://www.arb.ca.gov/aqmis2/display.php?download=y&param=PM25&units=007&statistic=DAVG&year=2013&mon=4&day=14&county_name=--COUNTY--&basin=--AIR+BASIN--&latitude=A-Whole+State&report=7DAY&order=basin%2Ccounty_name%2Cs.name&submit=Retrieve+Data&ptype=aqd
-
-
-
+except Exception as e:
+        print(e)
